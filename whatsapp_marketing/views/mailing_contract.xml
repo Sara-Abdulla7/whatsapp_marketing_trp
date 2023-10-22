@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <!-- Inherit Form View to Modify it -->
+        <record id="mailing_contract_form_view_inherit" model="ir.ui.view">
+            <field name="name">mailing_contract_form_view_inherit</field>
+            <field name="model">mailing.contact</field>
+            <field name="inherit_id" ref="mass_mailing.mailing_contact_view_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='title_id']" position="before">
+                    <!-- Add your fields or attributes here -->
+                    <field name="phone" widget="phone"/>
+                    <field name="mobile" widget="phone"/>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

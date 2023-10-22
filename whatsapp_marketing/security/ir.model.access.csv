@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_whatsapp_marketing_whatsapp_marketing,whatsapp_marketing.whatsapp_marketing,model_whatsapp_marketing,,1,1,1,1
+access_whatsapp_marketing_whatsapp_marketing_line,whatsapp_marketing.whatsapp_marketing_line,model_whatsapp_marketing_line,,1,1,1,1
+access_whatsapp_marketing_whatsapp_list,whatsapp_marketing.whatsapp_list,model_whatsapp_list,,1,1,1,1
+access_whatsapp_marketing_whatsapp_list_line,whatsapp_marketing.whatsapp_list_line,model_whatsapp_list_line,,1,1,1,1
+access_whatsapp_marketing_whatsapp_marketing_schedule_date,whatsapp_marketing.whatsapp_marketing_schedule_date,model_whatsapp_marketing_schedule_date,,1,1,1,1

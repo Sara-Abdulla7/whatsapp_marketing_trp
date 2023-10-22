@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="whatsapp_marketing_line_view_tree" model="ir.ui.view">
+            <field name="name">whatsapp_marketing_line_view_tree</field>
+            <field name="model">whatsapp.marketing.line</field>
+            <field name="arch" type="xml">
+                <tree string="whatsapp Marketing Line" create="0" delete="0"
+                      decoration-success="state == 'sent'" decoration-danger="state=='failure'">
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="phone"/>
+                    <field name="state_description"/>
+                    <field name="state" widget="badge" decoration-success="state == 'sent'" decoration-danger="state=='failure'"/>
+                    <button name="open_client_view" string="Show" type="object" icon="fa-eye"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="whatsapp_marketing_line_view_search" model="ir.ui.view">
+            <field name="name">whatsapp_marketing_line_view_search</field>
+            <field name="model">whatsapp.marketing.line</field>
+            <field name="arch" type="xml">
+                <search string="Whatsapp Marketing Line">
+                    <field name="name" string="string"/>
+                    <field name="name" string="Client"/>
+                    <field name="name" string="Phone OR Mobile"/>
+                    <filter string="Sent" name="sent" domain="[('state', '=','sent' )]"/>
+                    <filter string="Failure" name="failure" domain="[('state', '=','failure' )]"/>
+                    <separator/>
+                    <filter name="filter_date" date="create_date" default_period="this_month"/>
+
+                    <group expand="0" string="Group By">
+                        <filter string="Client" name="groupby_client" context="{'group_by':'partner_id'}"/>
+                        <filter string="name" name="groupby_name" context="{'group_by':'name'}"/>
+                    </group>
+
+                </search>
+            </field>
+        </record>
+
+
+        <record id="whatsapp_marketing_line_action" model="ir.actions.act_window">
+            <field name="name">Messages States</field>
+            <field name="res_model">whatsapp.marketing.line</field>
+            <field name="view_mode">tree,search</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_empty_folder">
+                    <h1>No Messages Sent</h1>
+                </p>
+            </field>
+        </record>
+
+
+        <menuitem id="whatsapp_marketing_line_menuitem" name="Messages States" sequence="2" parent="whatsapp_marketing_root"
+                  action="whatsapp_marketing_line_action"/>
+    </data>
+</odoo>

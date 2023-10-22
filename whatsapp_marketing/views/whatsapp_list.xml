@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <record id="whatsapp_list_view_form" model="ir.ui.view">
+            <field name="name">whatsapp_list_view_form</field>
+            <field name="model">whatsapp.list</field>
+            <field name="arch" type="xml">
+                <form string="Whatsapp List Form">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button type="object" name="action_open_contact_list" class="oe_stat_button" icon="fa-users">
+                                <field name="contact_count" widget="statinfo" string="Recipients"/>
+                            </button>
+                        </div>
+
+                        <group>
+                            <field name="name" required="1"/>
+                        </group>
+                        <notebook>
+                            <page string="Whatsapp Contact">
+                                <field name="whatsapp_line_ids">
+                                    <tree editable="bottom">
+                                        <field name="partner_id"/>
+                                        <field name="phone"/>
+                                        <field name="mobile"/>
+                                    </tree>
+                                </field>
+
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="whatsapp_list_view_tree" model="ir.ui.view">
+            <field name="name">whatsapp_list_view_tree</field>
+            <field name="model">whatsapp.list</field>
+            <field name="arch" type="xml">
+                <tree string="whatsapp List">
+                    <field name="name"/>
+                    <field name="whatsapp_line_ids" widget="many2many_tags" string="Recipients"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="whatsapp_list_action" model="ir.actions.act_window">
+            <field name="name">Whatsapp List</field>
+            <field name="res_model">whatsapp.list</field>
+            <field name="view_mode">tree,form,search</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_empty_folder">
+                    <h1>Create Your Whatsapp List</h1>
+                </p>
+            </field>
+        </record>
+
+
+        <menuitem id="whatsapp_list_menuitem" name="Whatsapp List" sequence="3"
+                  parent="whatsapp_marketing_root"
+                  action="whatsapp_list_action"/>
+    </data>
+</odoo>

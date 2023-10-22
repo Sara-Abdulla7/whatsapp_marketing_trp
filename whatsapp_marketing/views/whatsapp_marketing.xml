@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+<!--        form view-->
+        <record id="whatsapp_marketing_view_form" model="ir.ui.view">
+            <field name="name">whatsapp_marketing_view_form</field>
+            <field name="model">whatsapp.marketing</field>
+            <field name="arch" type="xml">
+                <form string="Whatsapp Marketing ">
+                    <header>
+                        <button name="action_confirm" icon="fa-check" states="draft" type="object" string="Confirm"
+                                class="text-bg-success"/>
+                        <button name="action_cancel" icon="fa-times" states="confirm" type="object" string="Cancel"
+                                class="text-bg-danger"/>
+                        <button name="action_reset_to_draft" icon="fa-undo" states="cancel" type="object"
+                                string="Reset To Draft" class="text-bg-warning"/>
+                        <button name="send_ultramsg_func" icon="fa-whatsapp" states="confirm" type="object"
+                                string="Send" class="text-bg-success"/>
+                        <button name="action_schedule" type="object" class="btn-secondary" string="Schedule"
+                            attrs="{'invisible': [('state', 'in', ('in_queue',  'confirm', 'done','cancel'))]}" data-hotkey="x"/>
+                        <button name="check_whatsapp_api_config" type="object" class="btn-primary" string="Test Connection" icon="fa-sitemap"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <div class="alert alert-info text-center" role="alert"
+                        attrs="{'invisible': [('state', '!=', 'in_queue')]}" >
+                        <div class="o_mails_in_queue" attrs="{'invisible': [('state', '!=', 'in_queue')]}" >
+                            <strong attrs="{'invisible': [('state', '!=', 'in_queue')]}" >
+                                <span name="next_departure_text">This Whatsapp Message is scheduled for </span>
+                                <field name="next_departure" class="oe_inline" readonly="1"/>.
+                            </strong>
+                        </div>
+
+                    </div>
+
+
+
+
+
+
+
+
+
+                    <sheet>
+                        <div class="oe_button_box" name="button_box" attrs="{'invisible': [('state', '!=', 'done')]}">
+                            <button type="object" name="action_open_failure_message" class="oe_stat_button" icon="fa-times">
+                                <field name="failure_message_count" widget="statinfo" string="Failure"/>
+                            </button>
+                            <button type="object" name="action_open_sent_message" class="oe_stat_button" icon="fa-check">
+                                <field name="sent_message_count" widget="statinfo" string="Sent"/>
+                            </button>
+                        </div>
+
+
+
+
+                        <widget name="web_ribbon" title="Archived" bg_color="bg-danger"
+                                attrs="{'invisible': [('active', '=', True)]}"/>
+                        <field name="active" invisible="1"/>
+
+                        <div class="oe_title mb24">
+                            <h1>
+                                <label for="name"/>
+                                <field class="o_text_overflow" name="name" default_focus="1"
+                                       placeholder="e.g. Offer For ..." required="1" widget="char_emojis" attrs="{'readonly' : [('state', '!=', 'draft')]}"/>
+                            </h1>
+                        </div>
+
+
+                        <group>
+                            <field name="message" attrs="{'readonly' : [('state', '!=', 'draft')]}" widget="char_emojis" required="1" placeholder="e.g. New Sale on all T-shirts"/>
+                            <group class="o_mass_mailing_mailing_group">
+                                <label for="mailing_model_id" string="Recipients"/>
+                                <div name="mailing_model_id_container">
+                                    <div class="d-flex align-items-baseline flex-wrap">
+                                        <div class="me-5">
+                                            <field name="mailing_model_id"
+                                                   options="{'no_open': True, 'no_create': True}"
+                                                   attrs="{'readonly': [('state', 'in', ('sending', 'done'))]}"/>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </group>
+                            <field name="mailing_model_real" invisible="1"/>
+                            <field name="mailing_model_name" invisible="1"/>
+
+                        </group>
+                        <field name="whatsapp_list" widget="many2many_tags" attrs="{'invisible': [('mailing_model_name', '!=', 'mailing.list')],'readonly' : [('state', '!=', 'draft')]}"  placeholder="ADD Whatsapp List ..."/>
+                        <div  attrs="{'invisible': [('mailing_model_name', '=', 'mailing.list')]}">
+
+                                <field name="mailing_domain" widget="domain" options="{'model': 'mailing_model_real'}"
+                                       attrs="{'readonly': [('state', 'in', ('sending', 'done'))]}"/>
+
+                            </div>
+                        <group attrs="{'readonly' : [('state', '!=', 'draft')]}" string="Attachment" >
+                            <field name="attachment_ids"  string="Attach a file" nolabel="1"
+                                   colspan="2" attrs="{'readonly' : [('state', '!=', 'draft')]}" >
+                            <tree>
+                                <field name="name"/>
+                                <field name="description"/>
+                                <field name="file_size"/>
+                            </tree>
+                            </field>
+
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+
+                </form>
+            </field>
+        </record>
+
+<!--    tree view -->
+        <record id="whatsapp_marketing_view_tree" model="ir.ui.view">
+            <field name="name">whatsapp_marketing_view_tree</field>
+            <field name="model">whatsapp.marketing</field>
+            <field name="arch" type="xml">
+                <tree string="Whatsapp Marketing"
+                      decoration-info="state == 'draft'"
+                      decoration-success="state == 'done'"
+                      decoration-primary="state == 'confirm'"
+                      decoration-danger="state == 'cancel'"
+                >
+                    <field name="name"/>
+                    <field name="message"/>
+                    <field name="sent_message_count"  sum="Total Sent Messages"/>
+                    <field name="failure_message_count"  sum="Total Failure Messages"/>
+                    <field name="state" widget="badge" decoration-info="state == 'draft'"
+                      decoration-success="state == 'done'"
+                      decoration-primary="state == 'confirm'"
+                      decoration-danger="state == 'cancel'" class="text-center"/>
+                </tree>
+            </field>
+        </record>
+
+
+<!--        search view -->
+        <record id="whatsapp_marketing_view_search" model="ir.ui.view">
+            <field name="name">whatsapp_marketing_view_search</field>
+            <field name="model">whatsapp.marketing</field>
+            <field name="arch" type="xml">
+                <search string="Whatsapp Marketing ">
+                    <field name="name" string="Name"/>
+                    <field name="message" string="message"/>
+                    <filter string="Sent" name="sent" domain="[('state', '=','done' )]"/>
+                    <filter string="Cancel" name="cancel" domain="[('state', '=','cancel' )]"/>
+                    <filter string="Confirm" name="confirm" domain="[('state', '=','confirm' )]"/>
+                    <filter string="In Queue" name="in_queue" domain="[('state', '=','in_queue' )]"/>
+                    <filter string="Draft" name="draft" domain="[('state', '=','draft' )]"/>
+                    <separator/>
+                    <filter name="filter_date" date="create_date" default_period="this_month"/>
+
+                    <group expand="0" string="Group By">
+                        <filter string="state" name="groupby_state" context="{'group_by':'state'}"/>
+                        <filter string="create_date" name="groupby_create_date" context="{'group_by':'create_date'}"/>
+                    </group>
+
+                </search>
+            </field>
+        </record>
+
+
+
+<!-- action view -->
+        <record id="whatsapp_marketing_action" model="ir.actions.act_window">
+            <field name="name">Whatsapp Marketing</field>
+            <field name="res_model">whatsapp.marketing</field>
+            <field name="view_mode">tree,form,search</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">Ready to manage your Whatsapp Marketing more efficiently ?</p>
+                <p>Let's create.</p>
+            </field>
+        </record>
+
+
+
+
+<!--      start  menuitems-->
+        <menuitem name="Whatsapp Marketing" id="whatsapp_marketing_root"
+                  web_icon="whatsapp_marketing,static/description/icon.png"/>
+
+        <menuitem id="whatsapp_marketing_menuitem" name="Messages" sequence="1" parent="whatsapp_marketing_root"
+                  action="whatsapp_marketing_action"/>
+<!--        end menuitem-->
+
+
+    </data>
+</odoo>
