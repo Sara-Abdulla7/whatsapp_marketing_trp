@@ -10,7 +10,7 @@
     Integrate whatsapp with odoo for marketing (ultramsg API Provider)
     """,
 
-    'author': "Technolgy Resouoces Planning group",
+    'author': "Technolgy Resouoces Planning",
     'website': "https://trp.sa/",
 
     'category': 'Marketing/Whatsapp Marketing',
